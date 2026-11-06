@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS GLOBAL | Export Quality Apparel & Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <!-- Top Announcement Bar -->
+    <div class="top-bar">
+        <span><i class="fa-solid fa-truck-fast"></i> Nationwide Express Delivery | 100% Export Quality Apparel from Hemayetpur, Savar</span>
+        <div class="top-links">
+            <a href="/admin" target="_blank"><i class="fa-solid fa-lock"></i> Admin Portal</a>
+            <a href="https://wa.me/8801700000000" target="_blank"><i class="fa-brands fa-whatsapp"></i> Live Support</a>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <span class="logo-badge">NG</span>
+                <div>
+                    <h1>NEXUS GLOBAL</h1>
+                    <small>APPAREL & LIFESTYLE</small>
+                </div>
+            </a>
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search 500+ products by name, color, or SKU (e.g. NXG-1025)...">
+                <button onclick="applyFilters()">Search</button>
+            </div>
+
+            <div class="nav-actions">
+                <button class="cart-btn" onclick="toggleCart()">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-label">Cart</span>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <span class="hero-tag">GLOBAL EXPORT COLLECTION 2026</span>
+                <h2>Crafted for Comfort.<br>Designed for the World.</h2>
+                <p>Explore our curated catalog of 500+ export-grade garments directly from our manufacturing hub in Savar, Dhaka.</p>
+                <div class="hero-btns">
+                    <a href="#catalog" class="btn-primary">Shop 500+ Items <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://wa.me/8801700000000" target="_blank" class="btn-outline"><i class="fa-brands fa-whatsapp"></i> Wholesale Inquiry</a>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <h3>500+</h3>
+                    <p>Active SKUs</p>
+                </div>
+                <div class="stat-card">
+                    <h3>100%</h3>
+                    <p>QC Inspected</p>
+                </div>
+                <div class="stat-card">
+                    <h3>24/7</h3>
+                    <p>Cloud Sync</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Catalog Section -->
+    <main class="container main-section" id="catalog">
+        <!-- Filter & Sort Bar -->
+        <div class="toolbar">
+            <div class="category-tabs" id="categoryTabs">
+                <button class="tab active" data-cat="All">All Collection</button>
+                <button class="tab" data-cat="Men">Men</button>
+                <button class="tab" data-cat="Women">Women</button>
+                <button class="tab" data-cat="Winter">Winter</button>
+                <button class="tab" data-cat="Kids">Kids</button>
+                <button class="tab" data-cat="Accessories">Accessories</button>
+            </div>
+
+            <div class="sort-controls">
+                <span id="resultCount">Loading catalog...</span>
+                <select id="sortSelect" onchange="applyFilters()">
+                    <option value="default">Sort: Featured</option>
+                    <option value="price_low">Price: Low to High</option>
+                    <option value="price_high">Price: High to Low</option>
+                    <option value="rating">Top Rated</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="product-grid" id="productGrid">
+            <!-- JS will inject cards here -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
+    </main>
+
+    <!-- Slide-out Cart Drawer -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <aside class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3><i class="fa-solid fa-bag-shopping"></i> Shopping Bag</h3>
+            <button class="close-btn" onclick="toggleCart()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="cart-items" id="cartItems">
+            <p class="empty-msg">Your bag is currently empty.</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="cartSubtotal">৳0</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery (Standard)</span>
+                <span id="cartDelivery">৳80</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total Payable</span>
+                <span id="cartTotal">৳0</span>
+            </div>
+
+            <button class="btn-primary full-width" onclick="openCheckoutModal()">Proceed to Checkout</button>
+            <button class="btn-whatsapp full-width" onclick="orderViaWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Quick Order via WhatsApp</button>
+        </div>
+    </aside>
+
+    <!-- Checkout Modal -->
+    <div class="modal-backdrop" id="checkoutModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Complete Your Order</h3>
+                <button class="close-btn" onclick="closeCheckoutModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="checkoutForm" onsubmit="submitOrder(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="custName" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number *</label>
+                    <input type="tel" id="custPhone" required placeholder="01XXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>Delivery Zone *</label>
+                    <select id="custCity" onchange="updateDeliveryZone()">
+                        <option value="Dhaka">Inside Dhaka / Savar (৳80)</option>
+                        <option value="Outside Dhaka">Outside Dhaka (৳130)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Full Delivery Address *</label>
+                    <textarea id="custAddress" rows="3" required placeholder="House, Road, Area, Thana..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary full-width" id="submitOrderBtn">Confirm Order (Cash on Delivery)</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div>
+                <h3>NEXUS GLOBAL</h3>
+                <p>Export-grade fashion & apparel brand delivering international quality across Bangladesh.</p>
+                <p><i class="fa-solid fa-location-dot"></i> Hemayetpur, Savar, Dhaka-1340, Bangladesh</p>
+            </div>
+            <div>
+                <h4>Portfolio Tech Stack</h4>
+                <ul>
+                    <li>Backend: Python Flask REST API</li>
+                    <li>Database: MongoDB Atlas Cloud (500 SKUs)</li>
+                    <li>Frontend: Responsive HTML5, CSS3 & Vanilla JS</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Customer Care</h4>
+                <p>Email: support@nexusglobal.com</p>
+                <p>WhatsApp: +880 1700-000000</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 NEXUS GLOBAL. Developed by Md. Rahat Howlader.</p>
+        </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
